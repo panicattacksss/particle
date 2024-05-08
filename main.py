@@ -44,7 +44,7 @@ for i in range(1, 101):
 
     
     while True:
-        time.sleep(15)
+        time.sleep(30)
         tx_receipt = web3.eth.get_transaction_receipt(tx_hash)
         if tx_receipt is not None:
             if tx_receipt['status'] == 1:
