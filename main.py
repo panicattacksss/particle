@@ -9,7 +9,7 @@ rpc_url = "https://sepolia.infura.io/v3/ВАШ КЛЮЧ INFURA"
 web3 = Web3(Web3.HTTPProvider(rpc_url))
 web3.middleware_onion.inject(geth_poa_middleware, layer=0)
 
-mnemonic_phrase = "ВАША МНЕМОНИЧЕСКАЯ ФРАЗА"
+mnemonic_phrase = "Ваша сид ФРАЗА"
 private_key = Account.from_mnemonic(mnemonic_phrase)._private_key.hex()
 account_address = Account.from_mnemonic(mnemonic_phrase).address
 
@@ -23,10 +23,10 @@ for i in range(1, 101):
         receiver_address = random.choice(lines)
 
     receiver_address = receiver_address.strip()
-    sum = random.uniform(0.000001, 0.0001)
+    sum = random.uniform(0.00001, 0.0001)
 
     amount_to_send = Web3.to_wei(sum, 'ether')
-    gwei = random.uniform(3, 6)
+    gwei = random.uniform(9, 15)
     transaction = {
         'nonce': nonce,
         'to': receiver_address,
@@ -42,4 +42,16 @@ for i in range(1, 101):
 
     print(f'Номер транзакции: {i}', "Транзакция отправлена. Хэш транзакции:", web3.to_hex(tx_hash))
 
-    time.sleep(60)
+    
+    while True:
+        time.sleep(15)
+        tx_receipt = web3.eth.get_transaction_receipt(tx_hash)
+        if tx_receipt is not None:
+            if tx_receipt['status'] == 1:
+                print("Транзакция успешно выполнена.")
+                break
+            else:
+                print("Транзакция не удалась.")
+        else:
+            print("Транзакция еще не включена в блок.")
+        
